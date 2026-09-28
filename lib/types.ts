@@ -1,1 +1,6 @@
-export type Settings={id:boolean;couple_one:string;couple_two:string;tagline:string|null;event_date:string|null;updated_at:string};export type Photo={id:string;storage_path:string;guest_name:string|null;message:string|null;approved:boolean;created_at:string};
+export type Photo = {
+  id: number;
+  created_at: string;
+  image_url: string;
+  caption: string | null;
+};
