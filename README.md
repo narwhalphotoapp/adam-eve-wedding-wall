@@ -1,25 +1,21 @@
 # Adam & Eve Wedding Wall
 
-A premium, mobile-first wedding photo wall built with Next.js, TypeScript and Supabase.
+A premium, mobile-first wedding photo wall built with Next.js and TypeScript, running on Netlify Database and Netlify Blobs.
 
 ## Pages
 
-- / — live public memory wall with Supabase Realtime
+- / — public memory wall, polling for new photos every few seconds
 - /upload — guest upload from camera or photo library
 - /qr — reception QR code linking to the upload page
 
-## Supabase
+## How it works
 
-The app uses the existing `wedding_settings`, `photos`, and `wedding-photos` storage bucket. Existing RLS policies and Realtime configuration were preserved.
+- Photo bytes are stored in Netlify Blobs (`wedding-photos` store), keyed by the photo's database id.
+- Guest name, note, and timestamp are stored in Netlify Database (Postgres via Drizzle) in the `photos` table.
+- `/api/photos` lists recent photos (GET) and accepts new uploads (POST, multipart form).
+- `/api/photos/[id]/image` streams the photo bytes back with the right content type.
 
-Set these environment variables in Vercel:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_PUBLISHABLE_OR_ANON_KEY
-```
-
-The couple names, tagline and event date are read from `wedding_settings`, so the wedding details can be changed in Supabase without editing the app.
+The couple's names and tagline are set in `lib/config.ts` — edit that file to personalize the wall.
 
 ## Local development
 
@@ -34,5 +30,3 @@ Validation commands:
 npm run typecheck
 npm run build
 ```
-
-Do not add a service-role key to the frontend or to `NEXT_PUBLIC_*` variables.
