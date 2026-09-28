@@ -2,23 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { supabase } from "../../lib/supabase";
+import { site } from "../../lib/config";
 
 export default function QR() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [settings, setSettings] = useState({ couple_one: "Adam", couple_two: "Eve" });
   const [url, setUrl] = useState("");
 
   useEffect(() => {
-    void supabase
-      .from("wedding_settings")
-      .select("couple_one,couple_two")
-      .eq("id", true)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data) setSettings(data);
-      });
-
     setUrl(window.location.origin + "/upload");
   }, []);
 
@@ -46,7 +36,7 @@ export default function QR() {
     <main>
       <header className="site-header">
         <Link className="brand" href="/">
-          <span className="brand-script">{settings.couple_one} &amp; {settings.couple_two}</span>
+          <span className="brand-script">{site.coupleOne} &amp; {site.coupleTwo}</span>
           <span className="brand-subtitle">OUR WEDDING MEMORIES</span>
         </Link>
         <nav>
